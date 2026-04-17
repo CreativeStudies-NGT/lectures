@@ -5,7 +5,7 @@ from math import gcd
 from fractions import Fraction
 
 st.write('新潟大学創生学部：データサイエンス概説')
-st.title('「近似」について（sin関数を例に）')
+st.title('「関数の近似」について（sin関数を例に）')
 st.markdown('原点に近づくほど $\\sin(x) \\approx x$ が成り立つことを確認しよう。')
 
 zoom = st.slider('拡大率', min_value=1.0, max_value=25.0, value=1.0, step=0.5)
