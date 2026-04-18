@@ -4,7 +4,7 @@ import streamlit as st
 from math import gcd
 from fractions import Fraction
 
-st.write('新潟大学創生学部1：データサイエンス概説')
+st.write('新潟大学創生学部：データサイエンス概説')
 st.title('「関数の近似」について（sin関数を例に）')
 st.markdown('原点に近づくほど $\\sin(x) \\approx x$ が成り立つことを確認しよう。')
 
