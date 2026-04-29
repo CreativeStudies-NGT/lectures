@@ -27,7 +27,7 @@ if use_density:
     plt.axhline(1/6, color='tomato', linestyle='--', linewidth=1.5, label='理論値 $1/6$')
     plt.ylim(0, 0.5)
 else:
-    plt.axhline(n/6, color='tomato', linestyle='--', linewidth=1.5, label='理論値 $n/6$')
+    plt.axhline(n/6, color='tomato', linestyle='--', linewidth=1.5, label=f'理論値 $n/6$ = {n/6:.1f}回')
     plt.ylim(0, n * 0.5)
 plt.xlabel('出目')
 plt.ylabel(yaxis)
