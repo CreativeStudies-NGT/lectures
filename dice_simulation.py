@@ -37,15 +37,16 @@ plt.legend()
 st.pyplot(plt.gcf())
 
 counts = np.bincount(results, minlength=7)[1:]
-st.write('**各出目の度数**')
-st.dataframe(
-    {'出目': list(range(1, 7)), '度数': counts, '相対度数': (counts / n).round(4)},
-    hide_index=True,
-    use_container_width=True,
-)
 
 st.write('**統計量**')
 col1, col2, col3 = st.columns(3)
 col1.metric('平均', f'{results.mean():.3f}', f'理論値 3.500')
 col2.metric('分散', f'{results.var():.3f}', f'理論値 2.917')
 col3.metric('標準偏差', f'{results.std():.3f}', f'理論値 1.708')
+
+st.write('**各出目の度数**')
+st.dataframe(
+    {'出目': list(range(1, 7)), '度数': counts, '相対度数': (counts / n).round(4)},
+    hide_index=True,
+    use_container_width=True,
+)
