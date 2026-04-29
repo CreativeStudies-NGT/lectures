@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib_fontja
 
-st.write('新潟大学創生学部：データサイエンス概説2')
+st.write('新潟大学創生学部：データサイエンス概説')
 st.title('サイコロシミュレーション')
 st.write('サイコロを $n$ 回振ったときの実現値のヒストグラムです。')
 
