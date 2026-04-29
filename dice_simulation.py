@@ -7,8 +7,8 @@ st.write('新潟大学創生学部：データサイエンス概説')
 st.title('サイコロシミュレーション')
 st.write('サイコロを $n$ 回振ったときの実現値のヒストグラムです。')
 
-n = st.slider('試行回数 $n$', min_value=10, max_value=10000, value=100, step=10)
-yaxis = st.radio('縦軸', ['相対度数', '回数'], horizontal=True)
+n = st.slider('試行回数 $n$', min_value=10, max_value=10000, value=10, step=10)
+yaxis = st.radio('縦軸', ['回数', '相対度数'], horizontal=True)
 
 if 'seed' not in st.session_state:
     st.session_state.seed = 0
@@ -19,7 +19,7 @@ if st.button('🎲 振り直す'):
 rng = np.random.default_rng(st.session_state.seed)
 results = rng.integers(1, 7, size=n)
 
-use_density = yaxis == '相対度数'
+use_density = (yaxis == '相対度数')
 
 plt.figure()
 plt.hist(results, bins=np.arange(0.5, 7.5, 1), edgecolor='white', color='steelblue', density=use_density)
