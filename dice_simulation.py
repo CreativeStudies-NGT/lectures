@@ -7,7 +7,7 @@ st.write('新潟大学創生学部：データサイエンス概説')
 st.title('サイコロシミュレーション')
 st.write('サイコロを $n$ 回振ったときの実現値のヒストグラムです。')
 
-n = st.slider('試行回数 $n$', min_value=10, max_value=10000, value=10, step=10)
+n = st.slider('試行回数 $n$', min_value=10, max_value=6000, value=10, step=10)
 yaxis = st.radio('縦軸', ['回数', '相対度数'], horizontal=True)
 
 if 'seed' not in st.session_state:
