@@ -7,8 +7,8 @@ import streamlit as st
 import matplotlib_fontja
 plt.rcParams['axes.unicode_minus'] = False
 
-st.header('新潟大学創生学部：データサイエンス概説')
-st.title('ポアソン分布インタラクティブ可視化')
+st.write('新潟大学創生学部：データサイエンス概説')
+st.title('Poisson分布形状のシミュレーション')
 
 # --- サイドバー: パラメータ設定 ---
 st.sidebar.header('パラメータ設定')
