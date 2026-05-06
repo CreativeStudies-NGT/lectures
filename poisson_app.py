@@ -6,6 +6,7 @@ import streamlit as st
 
 plt.rcParams['font.family'] = 'IPAGothic'
 
+st.header('新潟大学創生学部：データサイエンス概説')
 st.title('ポアソン分布インタラクティブ可視化')
 
 # --- サイドバー: パラメータ設定 ---
