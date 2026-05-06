@@ -5,7 +5,8 @@ import streamlit as st
 from scipy.stats import binom
 
 st.set_page_config(page_title='二項分布の可視化', layout='centered')
-st.title('二項分布の可視化')
+st.write('新潟大学創生学部：データサイエンス概説')
+st.title('二項分布形状のシミュレーション')
 st.markdown('スライダーで **試行回数 n** と **成功確率 p** を変えて分布の変化を確認しよう。')
 
 n = st.slider('試行回数 n', min_value=1, max_value=100, value=10, step=1)
