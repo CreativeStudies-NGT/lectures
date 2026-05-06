@@ -42,13 +42,5 @@ with st.expander('各実現値の確率を表示'):
     st.dataframe(rows, use_container_width=True)
 
 st.markdown('---')
-st.markdown(
-    '**累積確率の計算**  \n'
-    'ある値 x₀ を指定して、P(X = x₀)・P(X ≥ x₀)・P(X ≤ x₀) を確認できます。'
-)
 x0 = st.number_input('実現値 x₀', min_value=0, max_value=n, value=min(int(round(mu)), n), step=1)
-
-c1, c2, c3 = st.columns(3)
-c1.metric(f'P(X = {x0})', f'{y[x0]:.4f}')
-c2.metric(f'P(X ≥ {x0})', f'{y[x0:].sum():.4f}')
-c3.metric(f'P(X ≤ {x0})', f'{y[:x0+1].sum():.4f}')
+st.metric(f'P(X = {x0})', f'{y[x0]:.4f}')
