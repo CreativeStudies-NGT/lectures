@@ -4,7 +4,8 @@ import matplotlib.ticker as ticker
 from scipy.stats import poisson, binom
 import streamlit as st
 
-plt.rcParams['font.family'] = 'IPAGothic'
+import matplotlib_fontja
+plt.rcParams['axes.unicode_minus'] = False
 
 st.header('新潟大学創生学部：データサイエンス概説')
 st.title('ポアソン分布インタラクティブ可視化')
