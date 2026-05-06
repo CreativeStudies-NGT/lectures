@@ -43,4 +43,4 @@ with st.expander('各実現値の確率を表示'):
 
 st.markdown('---')
 x0 = st.number_input('実現値 x₀', min_value=0, max_value=n, value=min(int(round(mu)), n), step=1)
-st.metric(f'P(X = {x0})', f'{y[x0]:.4f}')
+st.metric(f'P(X = {x0})', f'{y[x0]:.6f}')
