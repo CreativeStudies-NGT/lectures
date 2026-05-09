@@ -12,17 +12,17 @@ st.title('正規分布のシミュレーション')
 # --- サイドバー: パラメータ設定 ---
 st.sidebar.header('パラメータ設定')
 
-mu = st.sidebar.slider('平均 μ', min_value=1.0, max_value=100.0, value=15.0, step=0.5)
-sigma = st.sidebar.slider('標準偏差 σ', min_value=0.5, max_value=15.0, value=3.0, step=0.5)
+mu = st.sidebar.slider('平均 μ', min_value=1.0, max_value=100.0, value=50.0, step=0.5)
+sigma = st.sidebar.slider('標準偏差 σ', min_value=0.5, max_value=15.0, value=5.0, step=0.5)
 
 show_binomial = st.sidebar.checkbox('二項分布を重ねて表示', value=False)
 
-fix_xaxis = st.sidebar.checkbox('横軸の範囲を固定する', value=False)
+fix_xaxis = st.sidebar.checkbox('横軸の範囲を固定する', value=True)
 if fix_xaxis:
     if 'x_lo_fixed' not in st.session_state:
-        st.session_state['x_lo_fixed'] = float(round(mu - 4 * sigma, 1))
+        st.session_state['x_lo_fixed'] = 0.0
     if 'x_hi_fixed' not in st.session_state:
-        st.session_state['x_hi_fixed'] = float(round(mu + 4 * sigma, 1))
+        st.session_state['x_hi_fixed'] = 110.0
     x_lo = st.sidebar.number_input('横軸 最小値', key='x_lo_fixed')
     x_hi = st.sidebar.number_input('横軸 最大値', key='x_hi_fixed')
 else:
