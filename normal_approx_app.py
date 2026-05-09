@@ -12,7 +12,7 @@ st.title('正規分布のシミュレーション')
 # --- サイドバー: パラメータ設定 ---
 st.sidebar.header('パラメータ設定')
 
-mu = st.sidebar.slider('平均 μ', min_value=1.0, max_value=50.0, value=15.0, step=0.5)
+mu = st.sidebar.slider('平均 μ', min_value=1.0, max_value=100.0, value=15.0, step=0.5)
 sigma = st.sidebar.slider('標準偏差 σ', min_value=0.5, max_value=15.0, value=3.0, step=0.5)
 
 show_binomial = st.sidebar.checkbox('二項分布を重ねて表示', value=False)
