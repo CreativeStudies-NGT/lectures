@@ -33,6 +33,18 @@ else:
 
 x_norm = np.linspace(x_lo, x_hi, 300)
 
+# --- 確率計算区間 ---
+st.sidebar.markdown('---')
+st.sidebar.subheader('確率計算区間')
+show_area = st.sidebar.checkbox('区間の面積（確率）を表示', value=False)
+if show_area:
+    a1 = st.sidebar.slider('始点 x₁', min_value=float(x_lo), max_value=float(x_hi),
+                           value=float(mu - sigma), step=0.5)
+    a2 = st.sidebar.slider('終点 x₂', min_value=float(x_lo), max_value=float(x_hi),
+                           value=float(mu + sigma), step=0.5)
+    if a1 > a2:
+        a1, a2 = a2, a1
+
 # --- プロット ---
 fig = plt.figure(figsize=(9, 5))
 
@@ -56,6 +68,11 @@ if show_binomial:
 plt.plot(x_norm, norm.pdf(x_norm, loc=mu, scale=sigma),
          'r-', linewidth=2.5, label=f'正規分布 N(μ={mu:.1f}, σ={sigma:.1f})')
 
+if show_area:
+    x_fill = np.linspace(a1, a2, 300)
+    plt.fill_between(x_fill, norm.pdf(x_fill, loc=mu, scale=sigma),
+                     alpha=0.3, color='red', label=f'P({a1:.1f} ≤ x ≤ {a2:.1f})')
+
 plt.xlabel('x', fontsize=14)
 plt.ylabel('f(x)', fontsize=14)
 plt.title('正規分布の確率密度関数 (PDF)', fontsize=16)
@@ -66,6 +83,15 @@ plt.legend(fontsize=12, frameon=False)
 plt.tight_layout()
 st.pyplot(fig)
 plt.close(fig)
+
+# --- 確率の表示 ---
+if show_area:
+    prob = norm.cdf(a2, mu, sigma) - norm.cdf(a1, mu, sigma)
+    st.subheader('確率計算結果')
+    col_a, col_b, col_c = st.columns(3)
+    col_a.metric('始点 x₁', f'{a1:.2f}')
+    col_b.metric('終点 x₂', f'{a2:.2f}')
+    col_c.metric(f'P(x₁ ≤ X ≤ x₂)', f'{prob:.4f}')
 
 # --- 統計量の表示 ---
 st.subheader('統計量')
