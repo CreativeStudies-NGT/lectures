@@ -19,9 +19,15 @@ show_binomial = st.sidebar.checkbox('二項分布を重ねて表示', value=Fals
 
 fix_xaxis = st.sidebar.checkbox('横軸の範囲を固定する', value=False)
 if fix_xaxis:
-    x_lo = st.sidebar.number_input('横軸 最小値', value=float(round(mu - 4 * sigma, 1)))
-    x_hi = st.sidebar.number_input('横軸 最大値', value=float(round(mu + 4 * sigma, 1)))
+    if 'x_lo_fixed' not in st.session_state:
+        st.session_state['x_lo_fixed'] = float(round(mu - 4 * sigma, 1))
+    if 'x_hi_fixed' not in st.session_state:
+        st.session_state['x_hi_fixed'] = float(round(mu + 4 * sigma, 1))
+    x_lo = st.sidebar.number_input('横軸 最小値', key='x_lo_fixed')
+    x_hi = st.sidebar.number_input('横軸 最大値', key='x_hi_fixed')
 else:
+    st.session_state.pop('x_lo_fixed', None)
+    st.session_state.pop('x_hi_fixed', None)
     x_lo = mu - 4 * sigma
     x_hi = mu + 4 * sigma
 
