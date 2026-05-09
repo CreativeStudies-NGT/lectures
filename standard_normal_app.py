@@ -22,13 +22,13 @@ mode = st.sidebar.radio(
 if mode == '左側の面積 P(X ≤ b)':
     b = st.sidebar.slider('上限 b', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
     prob = norm.cdf(b)
-    label = f'P(X ≤ {b:.2f}) = {prob:.4f}'
+    label = f'$P(X \\leq {b:.2f}) = {prob:.4f}$'
     x_fill = x_all[x_all <= b]
 
 elif mode == '右側の面積 P(X ≥ a)':
     a = st.sidebar.slider('下限 a', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
     prob = 1 - norm.cdf(a)
-    label = f'P(X ≥ {a:.2f}) = {prob:.4f}'
+    label = f'$P(X \\geq {a:.2f}) = {prob:.4f}$'
     x_fill = x_all[x_all >= a]
 
 else:
@@ -37,7 +37,7 @@ else:
     if a > b:
         a, b = b, a
     prob = norm.cdf(b) - norm.cdf(a)
-    label = f'P({a:.2f} ≤ X ≤ {b:.2f}) = {prob:.4f}'
+    label = f'$P({a:.2f} \\leq X \\leq {b:.2f}) = {prob:.4f}$'
     x_fill = x_all[(x_all >= a) & (x_all <= b)]
 
 # --- プロット ---
