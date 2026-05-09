@@ -17,9 +17,14 @@ sigma = st.sidebar.slider('標準偏差 σ', min_value=0.5, max_value=15.0, valu
 
 show_binomial = st.sidebar.checkbox('二項分布を重ねて表示', value=False)
 
-# --- x軸範囲 ---
-x_lo = mu - 4 * sigma
-x_hi = mu + 4 * sigma
+fix_xaxis = st.sidebar.checkbox('横軸の範囲を固定する', value=False)
+if fix_xaxis:
+    x_lo = st.sidebar.number_input('横軸 最小値', value=float(round(mu - 4 * sigma, 1)))
+    x_hi = st.sidebar.number_input('横軸 最大値', value=float(round(mu + 4 * sigma, 1)))
+else:
+    x_lo = mu - 4 * sigma
+    x_hi = mu + 4 * sigma
+
 x_norm = np.linspace(x_lo, x_hi, 300)
 
 # --- プロット ---
