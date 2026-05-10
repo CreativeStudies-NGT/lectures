@@ -7,10 +7,11 @@ from scipy.stats import binom
 st.set_page_config(page_title='二項分布の可視化', layout='centered')
 st.write('新潟大学創生学部：データサイエンス概説')
 st.title('二項分布形状のシミュレーション')
-st.markdown('スライダーで **試行回数 n** と **成功確率 p** を変えて分布の変化を確認しよう。')
 
-n = st.slider('試行回数 n', min_value=1, max_value=100, value=10, step=1)
-p = st.slider('成功確率 p', min_value=0.01, max_value=0.99, value=0.5, step=0.01)
+# --- サイドバー: パラメータ設定 ---
+st.sidebar.header('パラメータ設定')
+n = st.sidebar.slider('試行回数 n', min_value=1, max_value=100, value=10, step=1)
+p = st.sidebar.slider('成功確率 p', min_value=0.01, max_value=0.99, value=0.5, step=0.01)
 
 x = np.arange(0, n + 1)
 y = binom.pmf(x, n, p)
