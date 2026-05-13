@@ -13,7 +13,7 @@ st.title('Poisson分布形状のシミュレーション')
 # --- サイドバー: パラメータ設定 ---
 st.sidebar.header('パラメータ設定')
 
-mu = st.sidebar.slider('ポアソン分布の平均 μ', min_value=0.01, max_value=20.0, value=5.0, step=0.01)
+mu = st.sidebar.slider('ポアソン分布の平均 μ', min_value=0.1, max_value=20.0, value=5.0, step=0.1)
 
 show_binomial = st.sidebar.checkbox('二項分布を表示して比較', value=False)
 
