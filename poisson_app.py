@@ -53,6 +53,8 @@ plt.tight_layout()
 st.pyplot(fig)
 plt.close(fig)
 
+st.latex(r'P(X = k) = \frac{\mu^k \, e^{-\mu}}{k!} \quad (k = 0, 1, 2, \ldots)')
+
 # --- 統計量の表示 ---
 st.subheader('統計量')
 col1, col2 = st.columns(2)
