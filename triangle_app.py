@@ -48,8 +48,8 @@ f(x) = \begin{cases}
     st.latex(r'F(x) = \int_{-1}^{x} f(t)\,dt \quad\text{（-1 からの累積面積）}')
 
     st.sidebar.header('区間のパラメータ')
-    a = st.sidebar.slider('下限 a', -1.0, 1.0, -0.5, 0.05)
-    b = st.sidebar.slider('上限 b', -1.0, 1.0,  0.5, 0.05)
+    a = st.sidebar.slider('下限 a', -1.0, 1.0, -1.0, 0.05)
+    b = st.sidebar.slider('上限 b', -1.0, 1.0,  0.0, 0.05)
 
 else:
     # 非標準モード
