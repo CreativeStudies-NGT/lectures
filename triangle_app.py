@@ -69,18 +69,19 @@ f(x) = \begin{cases}
     h  = st.sidebar.slider('半幅 h',  0.5, 3.0, 1.0, 0.1)
     left, right = mu - h, mu + h
 
-    # μ や h が変わると range が変わるため、session_state の値を先にクランプする
-    for key in ('gen_a', 'gen_b'):
-        if key in st.session_state:
-            st.session_state[key] = max(float(left), min(float(right),
-                                        float(st.session_state[key])))
+    # μ や h が変わったら a, b を中心から ±50% の位置にリセット
+    if mu != st.session_state.get('prev_mu', mu) or h != st.session_state.get('prev_h', h):
+        st.session_state['gen_a'] = float(mu - 0.5 * h)
+        st.session_state['gen_b'] = float(mu + 0.5 * h)
+    st.session_state['prev_mu'] = mu
+    st.session_state['prev_h']  = h
 
     st.sidebar.header('区間のパラメータ')
     st.sidebar.caption(f'範囲：{left:.2f} 〜 {right:.2f}')
     a = st.sidebar.slider('下限 a', float(left), float(right),
-                          float(left + h * 0.5), 0.05, key='gen_a')
+                          float(mu - 0.5 * h), 0.05, key='gen_a')
     b = st.sidebar.slider('上限 b', float(left), float(right),
-                          float(right - h * 0.5), 0.05, key='gen_b')
+                          float(mu + 0.5 * h), 0.05, key='gen_b')
 
 if a > b:
     a, b = b, a
