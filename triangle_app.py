@@ -119,6 +119,8 @@ plt.xlim(left - margin, right + margin)
 plt.ylim(bottom=0, top=1 / h * 1.15)
 plt.grid(color='gray', linestyle=':', alpha=0.7)
 plt.legend(fontsize=12, frameon=False, loc='upper right')
+if not general:
+    plt.gca().set_aspect('equal', adjustable='box')
 plt.tight_layout()
 st.pyplot(fig)
 plt.close(fig)
