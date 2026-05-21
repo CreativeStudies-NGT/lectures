@@ -6,24 +6,6 @@ import matplotlib_fontja
 plt.rcParams['axes.unicode_minus'] = False
 
 st.write('新潟大学創生学部：データサイエンス概説')
-st.title('二等辺三角形分布と面積計算')
-
-st.markdown('中心 $\\mu$、半幅 $h$ の二等辺三角形（面積 = 1）')
-
-st.latex(r'''
-f(x) = \begin{cases}
-  \dfrac{x - (\mu - h)}{h^2} & (\mu - h \leq x \leq \mu) \\[6pt]
-  \dfrac{(\mu + h) - x}{h^2} & (\mu \leq x \leq \mu + h) \\[4pt]
-  0 & (\text{otherwise})
-\end{cases}
-''')
-
-st.latex(r'''
-F(x) = \int_{\mu-h}^{x} f(t)\,dt = \begin{cases}
-  \dfrac{(x-(\mu-h))^2}{2h^2} & (\mu-h \leq x \leq \mu) \\[6pt]
-  1 - \dfrac{((\mu+h)-x)^2}{2h^2} & (\mu \leq x \leq \mu+h)
-\end{cases}
-''')
 
 
 def pdf(x, mu, h):
@@ -47,25 +29,64 @@ def cdf(x, mu, h):
 
 
 # --- サイドバー ---
-st.sidebar.header('三角形のパラメータ')
-mu = st.sidebar.slider('中心 μ', -3.0, 3.0, 0.0, 0.1)
-h  = st.sidebar.slider('半幅 h', 0.5, 3.0, 1.0, 0.1)
+general = st.sidebar.checkbox('非標準の三角形を使う', value=False)
 
-left, right = mu - h, mu + h
+if not general:
+    # 標準モード
+    mu, h = 0.0, 1.0
+    left, right = -1.0, 1.0
 
-st.sidebar.header('区間のパラメータ')
-st.sidebar.caption(f'三角形の範囲：{left:.2f} 〜 {right:.2f}')
-# a, b は三角形内の位置を % で指定（スライダー範囲が μ, h に依存しないため安定）
-a_pct = st.sidebar.slider('下限 a の位置 (%)', 0, 100, 25)
-b_pct = st.sidebar.slider('上限 b の位置 (%)', 0, 100, 75)
-a = left + a_pct / 100 * 2 * h
-b = left + b_pct / 100 * 2 * h
+    st.title('標準二等辺三角形分布と面積計算')
+    st.markdown('底辺 2（$-1 \\leq x \\leq 1$）、頂点 $(0,\\,1)$ の二等辺三角形（面積 = 1）')
+    st.latex(r'''
+f(x) = \begin{cases}
+  x + 1 & (-1 \leq x \leq 0) \\
+  1 - x & (0 \leq x \leq 1) \\
+  0 & (\text{otherwise})
+\end{cases}
+''')
+    st.latex(r'F(x) = \int_{-1}^{x} f(t)\,dt \quad\text{（-1 からの累積面積）}')
+
+    st.sidebar.header('区間のパラメータ')
+    a = st.sidebar.slider('下限 a', -1.0, 1.0, -0.5, 0.05)
+    b = st.sidebar.slider('上限 b', -1.0, 1.0,  0.5, 0.05)
+
+else:
+    # 非標準モード
+    st.title('二等辺三角形分布と面積計算')
+    st.markdown('中心 $\\mu$、半幅 $h$ の二等辺三角形（面積 = 1）')
+    st.latex(r'''
+f(x) = \begin{cases}
+  \dfrac{x-(\mu-h)}{h^2} & (\mu-h \leq x \leq \mu) \\[6pt]
+  \dfrac{(\mu+h)-x}{h^2} & (\mu \leq x \leq \mu+h) \\[4pt]
+  0 & (\text{otherwise})
+\end{cases}
+''')
+    st.latex(r'F(x) = \int_{\mu-h}^{x} f(t)\,dt')
+
+    st.sidebar.header('三角形のパラメータ')
+    mu = st.sidebar.slider('中心 μ', -3.0, 3.0, 0.0, 0.1)
+    h  = st.sidebar.slider('半幅 h',  0.5, 3.0, 1.0, 0.1)
+    left, right = mu - h, mu + h
+
+    # μ や h が変わると range が変わるため、session_state の値を先にクランプする
+    for key in ('gen_a', 'gen_b'):
+        if key in st.session_state:
+            st.session_state[key] = max(float(left), min(float(right),
+                                        float(st.session_state[key])))
+
+    st.sidebar.header('区間のパラメータ')
+    st.sidebar.caption(f'範囲：{left:.2f} 〜 {right:.2f}')
+    a = st.sidebar.slider('下限 a', float(left), float(right),
+                          float(left + h * 0.5), 0.05, key='gen_a')
+    b = st.sidebar.slider('上限 b', float(left), float(right),
+                          float(right - h * 0.5), 0.05, key='gen_b')
 
 if a > b:
     a, b = b, a
 
-Fa = cdf(a, mu, h)
-Fb = cdf(b, mu, h)
+Fa   = cdf(a, mu, h)
+Fb   = cdf(b, mu, h)
 area = Fb - Fa
 
 # --- プロット ---
@@ -85,13 +106,14 @@ if len(x_mid) > 0:
                      alpha=0.55, color='red', label=f'$F(b) - F(a) = {area:.4f}$')
 
 plt.plot(x_all, pdf(x_all, mu, h), 'b-', linewidth=2.5, label='$f(x)$')
-plt.axvline(a, color='steelblue', linestyle='--', linewidth=1.8, label=f'$a = {a:.3f}$')
-plt.axvline(b, color='firebrick', linestyle='--', linewidth=1.8, label=f'$b = {b:.3f}$')
+plt.axvline(a, color='steelblue', linestyle='--', linewidth=1.8, label=f'$a = {a:.2f}$')
+plt.axvline(b, color='firebrick', linestyle='--', linewidth=1.8, label=f'$b = {b:.2f}$')
 
 plt.axhline(0, color='black', linewidth=0.8)
 plt.xlabel('x', fontsize=14)
 plt.ylabel('f(x)', fontsize=14)
-plt.title(f'二等辺三角形分布　μ = {mu:.1f}、h = {h:.1f}', fontsize=16)
+title = f'二等辺三角形分布　μ = {mu:.1f}、h = {h:.1f}' if general else '標準二等辺三角形分布'
+plt.title(title, fontsize=16)
 plt.xlim(left - margin, right + margin)
 plt.ylim(bottom=0, top=1 / h * 1.15)
 plt.grid(color='gray', linestyle=':', alpha=0.7)
@@ -103,11 +125,12 @@ plt.close(fig)
 # --- 計算結果 ---
 st.subheader('計算結果')
 col1, col2, col3 = st.columns(3)
-col1.metric('F(a)　（左端 〜 a の面積）', f'{Fa:.4f}', f'a = {a:.3f}', delta_color='off')
-col2.metric('F(b)　（左端 〜 b の面積）', f'{Fb:.4f}', f'b = {b:.3f}', delta_color='off')
+col1.metric('F(a)　（左端 〜 a の面積）', f'{Fa:.4f}')
+col2.metric('F(b)　（左端 〜 b の面積）', f'{Fb:.4f}')
 col3.metric('F(b) − F(a)　（a 〜 b の面積）', f'{area:.4f}')
 
 st.latex(r'P(a \leq X \leq b) = F(b) - F(a)')
 st.caption('正規分布表も同じしくみで、F(z) を表から引いて差をとることで区間の確率を計算します。')
 
-st.info('**標準二等辺三角形**は μ = 0、h = 1 の場合です。')
+if general:
+    st.info('標準二等辺三角形は μ = 0、h = 1 の場合です。')
