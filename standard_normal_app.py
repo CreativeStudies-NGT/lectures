@@ -16,7 +16,7 @@ st.sidebar.header('確率計算の設定')
 
 mode = st.sidebar.radio(
     '計算モード',
-    ['左側の面積 P(X ≤ b)', '右側の面積 P(X ≥ a)', '区間の面積 P(a ≤ X ≤ b)']
+    ['左側の面積 P(X ≤ b)', '右側の面積 P(X ≥ a)', '区間の面積 P(a ≤ X ≤ b)', '原点からの面積 P(0 ≤ X ≤ z)']
 )
 
 if mode == '左側の面積 P(X ≤ b)':
@@ -31,7 +31,7 @@ elif mode == '右側の面積 P(X ≥ a)':
     label = f'$P(X \\geq {a:.2f}) = {prob:.4f}$'
     x_fill = x_all[x_all >= a]
 
-else:
+elif mode == '区間の面積 P(a ≤ X ≤ b)':
     a = st.sidebar.slider('下限 a', min_value=-4.0, max_value=4.0, value=-1.0, step=0.05)
     b = st.sidebar.slider('上限 b', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
     if a > b:
@@ -39,6 +39,17 @@ else:
     prob = norm.cdf(b) - norm.cdf(a)
     label = f'$P({a:.2f} \\leq X \\leq {b:.2f}) = {prob:.4f}$'
     x_fill = x_all[(x_all >= a) & (x_all <= b)]
+
+else:
+    z = st.sidebar.slider('z 値', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
+    if z >= 0:
+        prob = norm.cdf(z) - 0.5
+        label = f'$P(0 \\leq X \\leq {z:.2f}) = {prob:.4f}$'
+        x_fill = x_all[(x_all >= 0) & (x_all <= z)]
+    else:
+        prob = 0.5 - norm.cdf(z)
+        label = f'$P({z:.2f} \\leq X \\leq 0) = {prob:.4f}$'
+        x_fill = x_all[(x_all >= z) & (x_all <= 0)]
 
 # --- プロット ---
 fig = plt.figure(figsize=(9, 5))
@@ -71,11 +82,16 @@ elif mode == '右側の面積 P(X ≥ a)':
     col1.metric('下限 a', f'{a:.2f}')
     col2.metric('P(X ≥ a)', f'{prob:.4f}')
 
-else:
+elif mode == '区間の面積 P(a ≤ X ≤ b)':
     col1, col2, col3 = st.columns(3)
     col1.metric('下限 a', f'{a:.2f}')
     col2.metric('上限 b', f'{b:.2f}')
     col3.metric('P(a ≤ X ≤ b)', f'{prob:.4f}')
+
+else:
+    col1, col2 = st.columns(2)
+    col1.metric('z 値', f'{z:.2f}')
+    col2.metric('P(0 ≤ X ≤ z)', f'{prob:.4f}')
 
 # --- 補足 ---
 st.caption('標準正規分布は平均 μ=0、標準偏差 σ=1 の正規分布です。'
