@@ -56,6 +56,20 @@ if show_binomial:
 plt.plot(x_norm, norm.pdf(x_norm, loc=mu, scale=sigma),
          'r-', linewidth=2.5, label=f'正規分布 N(μ={mu:.1f}, σ={sigma:.1f})')
 
+# 変曲点 (x = μ ± σ) の表示
+y_inf = norm.pdf(mu + sigma, loc=mu, scale=sigma)
+plt.vlines([mu - sigma, mu + sigma], 0, y_inf, colors='green', linestyles='--', linewidth=1.5)
+plt.hlines(y_inf, mu - sigma, mu + sigma, colors='green', linestyles='-', linewidth=1.5)
+# σ の矢印ラベル（左右それぞれ）
+arrow_kw = dict(arrowstyle='<->', color='green', lw=1.2)
+y_arrow = y_inf * 0.5
+plt.annotate('', xy=(mu - sigma, y_arrow), xytext=(mu, y_arrow),
+             arrowprops=arrow_kw)
+plt.text(mu - sigma / 2, y_arrow * 1.15, 'σ', ha='center', color='green', fontsize=12)
+plt.annotate('', xy=(mu + sigma, y_arrow), xytext=(mu, y_arrow),
+             arrowprops=arrow_kw)
+plt.text(mu + sigma / 2, y_arrow * 1.15, 'σ', ha='center', color='green', fontsize=12)
+
 plt.xlabel('x', fontsize=14)
 plt.ylabel('f(x)', fontsize=14)
 plt.title('正規分布の確率密度関数 (PDF)', fontsize=16)
