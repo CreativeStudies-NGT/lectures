@@ -22,13 +22,13 @@ mode = st.sidebar.radio(
 if mode == '左側の面積 P(X ≤ b)':
     b = st.sidebar.slider('上限 b', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
     prob = norm.cdf(b)
-    label = f'$P(X \\leq {b:.2f}) = {prob:.4f}$'
+    label = f'$P(X \\leq {b:.2f}) = {prob:.5f}$'
     x_fill = x_all[x_all <= b]
 
 elif mode == '右側の面積 P(X ≥ a)':
     a = st.sidebar.slider('下限 a', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
     prob = 1 - norm.cdf(a)
-    label = f'$P(X \\geq {a:.2f}) = {prob:.4f}$'
+    label = f'$P(X \\geq {a:.2f}) = {prob:.5f}$'
     x_fill = x_all[x_all >= a]
 
 elif mode == '区間の面積 P(a ≤ X ≤ b)':
@@ -37,18 +37,18 @@ elif mode == '区間の面積 P(a ≤ X ≤ b)':
     if a > b:
         a, b = b, a
     prob = norm.cdf(b) - norm.cdf(a)
-    label = f'$P({a:.2f} \\leq X \\leq {b:.2f}) = {prob:.4f}$'
+    label = f'$P({a:.2f} \\leq X \\leq {b:.2f}) = {prob:.5f}$'
     x_fill = x_all[(x_all >= a) & (x_all <= b)]
 
 else:
     z = st.sidebar.slider('z 値', min_value=-4.0, max_value=4.0, value=1.0, step=0.05)
     if z >= 0:
         prob = norm.cdf(z) - 0.5
-        label = f'$P(0 \\leq X \\leq {z:.2f}) = {prob:.4f}$'
+        label = f'$P(0 \\leq X \\leq {z:.2f}) = {prob:.5f}$'
         x_fill = x_all[(x_all >= 0) & (x_all <= z)]
     else:
         prob = 0.5 - norm.cdf(z)
-        label = f'$P({z:.2f} \\leq X \\leq 0) = {prob:.4f}$'
+        label = f'$P({z:.2f} \\leq X \\leq 0) = {prob:.5f}$'
         x_fill = x_all[(x_all >= z) & (x_all <= 0)]
 
 # --- プロット ---
@@ -75,23 +75,23 @@ st.subheader('計算結果')
 if mode == '左側の面積 P(X ≤ b)':
     col1, col2 = st.columns(2)
     col1.metric('上限 b', f'{b:.2f}')
-    col2.metric('P(X ≤ b)', f'{prob:.4f}')
+    col2.metric('P(X ≤ b)', f'{prob:.5f}')
 
 elif mode == '右側の面積 P(X ≥ a)':
     col1, col2 = st.columns(2)
     col1.metric('下限 a', f'{a:.2f}')
-    col2.metric('P(X ≥ a)', f'{prob:.4f}')
+    col2.metric('P(X ≥ a)', f'{prob:.5f}')
 
 elif mode == '区間の面積 P(a ≤ X ≤ b)':
     col1, col2, col3 = st.columns(3)
     col1.metric('下限 a', f'{a:.2f}')
     col2.metric('上限 b', f'{b:.2f}')
-    col3.metric('P(a ≤ X ≤ b)', f'{prob:.4f}')
+    col3.metric('P(a ≤ X ≤ b)', f'{prob:.5f}')
 
 else:
     col1, col2 = st.columns(2)
     col1.metric('z 値', f'{z:.2f}')
-    col2.metric('P(0 ≤ X ≤ z)', f'{prob:.4f}')
+    col2.metric('P(0 ≤ X ≤ z)', f'{prob:.5f}')
 
 # --- 補足 ---
 st.caption('標準正規分布は平均 μ=0、標準偏差 σ=1 の正規分布です。'
