@@ -67,7 +67,7 @@ plt.plot(x_norm, norm.pdf(x_norm, loc=mu, scale=sigma),
          'r-', linewidth=2.5, label=f'正規分布 N(μ={mu:.1f}, σ={sigma:.1f})')
 
 if show_area:
-    x_fill = x_norm[(x_norm >= area_a) & (x_norm <= area_b)]
+    x_fill = np.linspace(area_a, area_b, 300)
     area_label = f'$P({area_a:.2f} \\leq X \\leq {area_b:.2f}) = {area_prob:.5f}$'
     plt.fill_between(x_fill, norm.pdf(x_fill, loc=mu, scale=sigma),
                      alpha=0.35, color='blue', label=area_label)
