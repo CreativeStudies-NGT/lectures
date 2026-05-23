@@ -33,6 +33,16 @@ else:
 
 x_norm = np.linspace(x_lo, x_hi, 300)
 
+show_area = st.sidebar.checkbox('区間の面積を表示', value=False)
+if show_area:
+    a_default = float(round(mu - sigma, 2))
+    b_default = float(round(mu + sigma, 2))
+    area_a = st.sidebar.number_input('始点 a', value=a_default, step=0.5, format='%.2f')
+    area_b = st.sidebar.number_input('終点 b', value=b_default, step=0.5, format='%.2f')
+    if area_a > area_b:
+        area_a, area_b = area_b, area_a
+    area_prob = norm.cdf(area_b, loc=mu, scale=sigma) - norm.cdf(area_a, loc=mu, scale=sigma)
+
 # --- プロット ---
 fig = plt.figure(figsize=(9, 5))
 
@@ -55,6 +65,12 @@ if show_binomial:
 
 plt.plot(x_norm, norm.pdf(x_norm, loc=mu, scale=sigma),
          'r-', linewidth=2.5, label=f'正規分布 N(μ={mu:.1f}, σ={sigma:.1f})')
+
+if show_area:
+    x_fill = x_norm[(x_norm >= area_a) & (x_norm <= area_b)]
+    area_label = f'$P({area_a:.2f} \\leq X \\leq {area_b:.2f}) = {area_prob:.5f}$'
+    plt.fill_between(x_fill, norm.pdf(x_fill, loc=mu, scale=sigma),
+                     alpha=0.35, color='blue', label=area_label)
 
 # 変曲点 (x = μ ± σ) の表示
 y_inf = norm.pdf(mu + sigma, loc=mu, scale=sigma)
@@ -93,6 +109,14 @@ with col2:
         st.metric('対応する二項分布 n', f'{n_b}')
         st.metric('対応する二項分布 p', f'{p_b:.4f}')
         st.metric('二項分布の標準偏差 √(np(1-p))', f'{sigma_b:.4f}')
+
+# --- 区間確率の表示 ---
+if show_area:
+    st.subheader('区間の確率')
+    col1, col2, col3 = st.columns(3)
+    col1.metric('始点 a', f'{area_a:.2f}')
+    col2.metric('終点 b', f'{area_b:.2f}')
+    col3.metric('P(a ≤ X ≤ b)', f'{area_prob:.5f}')
 
 # --- 近似の説明 ---
 if show_binomial and binom_valid:
