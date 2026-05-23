@@ -35,12 +35,12 @@ x_norm = np.linspace(x_lo, x_hi, 300)
 
 show_area = st.sidebar.checkbox('区間の面積を表示', value=False)
 if show_area:
-    a_default = float(round(mu - sigma, 2))
-    b_default = float(round(mu + sigma, 2))
-    area_a = st.sidebar.number_input('始点 a', value=a_default, step=0.5, format='%.2f')
-    area_b = st.sidebar.number_input('終点 b', value=b_default, step=0.5, format='%.2f')
-    if area_a > area_b:
-        area_a, area_b = area_b, area_a
+    k_a = st.sidebar.number_input('始点 (σ の倍数)', value=-1.0, step=0.5, format='%.1f')
+    k_b = st.sidebar.number_input('終点 (σ の倍数)', value=1.0, step=0.5, format='%.1f')
+    if k_a > k_b:
+        k_a, k_b = k_b, k_a
+    area_a = mu + k_a * sigma
+    area_b = mu + k_b * sigma
     area_prob = norm.cdf(area_b, loc=mu, scale=sigma) - norm.cdf(area_a, loc=mu, scale=sigma)
 
 # --- プロット ---
@@ -68,7 +68,7 @@ plt.plot(x_norm, norm.pdf(x_norm, loc=mu, scale=sigma),
 
 if show_area:
     x_fill = np.linspace(area_a, area_b, 300)
-    area_label = f'$P({area_a:.2f} \\leq X \\leq {area_b:.2f}) = {area_prob:.5f}$'
+    area_label = f'$P(\\mu{k_a:+.1f}\\sigma \\leq X \\leq \\mu{k_b:+.1f}\\sigma) = {area_prob:.5f}$'
     plt.fill_between(x_fill, norm.pdf(x_fill, loc=mu, scale=sigma),
                      alpha=0.35, color='blue', label=area_label)
 
@@ -114,8 +114,8 @@ with col2:
 if show_area:
     st.subheader('区間の確率')
     col1, col2, col3 = st.columns(3)
-    col1.metric('始点 a', f'{area_a:.2f}')
-    col2.metric('終点 b', f'{area_b:.2f}')
+    col1.metric('始点 a', f'μ{k_a:+.1f}σ = {area_a:.2f}')
+    col2.metric('終点 b', f'μ{k_b:+.1f}σ = {area_b:.2f}')
     col3.metric('P(a ≤ X ≤ b)', f'{area_prob:.5f}')
 
 # --- 近似の説明 ---
