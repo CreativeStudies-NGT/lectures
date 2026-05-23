@@ -99,16 +99,16 @@ plt.close(fig)
 
 # --- 統計量の表示 ---
 st.subheader('統計量')
-col1, col2 = st.columns(2)
-with col1:
-    st.metric('平均 μ', f'{mu:.2f}')
-    st.metric('標準偏差 σ', f'{sigma:.2f}')
-    st.metric('分散 σ²', f'{sigma**2:.2f}')
-with col2:
-    if show_binomial and binom_valid:
-        st.metric('対応する二項分布 n', f'{n_b}')
-        st.metric('対応する二項分布 p', f'{p_b:.4f}')
-        st.metric('二項分布の標準偏差 √(np(1-p))', f'{sigma_b:.4f}')
+col1, col2, col3 = st.columns(3)
+col1.metric('平均 μ', f'{mu:.2f}')
+col2.metric('標準偏差 σ', f'{sigma:.2f}')
+col3.metric('分散 σ²', f'{sigma**2:.2f}')
+
+if show_binomial and binom_valid:
+    col1, col2, col3 = st.columns(3)
+    col1.metric('二項分布 n', f'{n_b}')
+    col2.metric('二項分布 p', f'{p_b:.4f}')
+    col3.metric('二項分布 σ', f'{sigma_b:.4f}')
 
 # --- 区間確率の表示 ---
 if show_area:
