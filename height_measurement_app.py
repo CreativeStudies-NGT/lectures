@@ -18,7 +18,7 @@ st.sidebar.header('パラメータ設定')
 true_height = st.sidebar.number_input('真値 μ (cm)', min_value=140.0, max_value=200.0,
                                        value=160.0, step=0.5)
 sigma = 0.5
-N = st.sidebar.slider('測定回数 N', min_value=1, max_value=200, value=1, step=1)
+N = st.sidebar.slider('測定回数 N', min_value=1, max_value=100, value=1, step=1)
 
 se = sigma / np.sqrt(N)
 st.sidebar.markdown('---')
