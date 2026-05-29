@@ -9,7 +9,7 @@ plt.rcParams['axes.unicode_minus'] = False
 st.write('新潟大学創生学部：データサイエンス概説')
 st.title('中心極限定理のデモ ― 身長の繰り返し測定')
 st.write(
-    '真値 μ の身長を測定誤差 σ で繰り返し測定するシミュレーション。'
+    '真値 μ の身長を測定誤差 σ = 0.5 cm で繰り返し測定するシミュレーション。'
     ' **N 回の測定平均**は標準誤差 σ/√N の正規分布に従います（中心極限定理）。'
 )
 
@@ -17,7 +17,7 @@ st.write(
 st.sidebar.header('パラメータ設定')
 true_height = st.sidebar.number_input('真値 μ (cm)', min_value=140.0, max_value=200.0,
                                        value=160.0, step=0.5)
-sigma = st.sidebar.slider('測定誤差 σ (cm)', min_value=0.1, max_value=5.0, value=1.0, step=0.1)
+sigma = 0.5
 N = st.sidebar.slider('測定回数 N', min_value=1, max_value=200, value=1, step=1)
 
 se = sigma / np.sqrt(N)
