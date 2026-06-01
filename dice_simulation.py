@@ -46,6 +46,24 @@ plt.tight_layout()
 st.pyplot(fig)
 plt.close(fig)
 
+# --- 大数の法則 ---
+st.markdown('---')
+st.subheader('大数の法則')
+st.write(
+    '試行回数 n を増やすと、各出目の相対度数は理論値 1/6 ≈ 0.167 に近づいていく。'
+    'これを**大数の法則**という。'
+    'n が小さいときは偏りが目立つが、n を大きくするほどヒストグラムが理論値（赤破線）に揃っていく様子を確認してみよう。'
+)
+
+max_dev = np.max(np.abs(counts / n - 1/6))
+if max_dev < 0.02:
+    st.success(f'n = {n}：各出目の相対度数が理論値 1/6 にかなり近づいている（最大ずれ {max_dev:.3f}）')
+elif max_dev < 0.05:
+    st.info(f'n = {n}：理論値に近づいてきている（最大ずれ {max_dev:.3f}）。さらに n を増やしてみよう。')
+else:
+    st.warning(f'n = {n}：まだ理論値からのずれが大きい（最大ずれ {max_dev:.3f}）。n を増やすと変化する。')
+
+st.markdown('---')
 # --- 統計量 ---
 counts = np.bincount(results, minlength=7)[1:]
 
