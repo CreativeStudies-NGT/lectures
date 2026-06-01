@@ -20,14 +20,11 @@ N_REPEAT = 2000
 DICE = list(range(1, 7))
 
 st.sidebar.header('パラメータ設定')
-st.sidebar.subheader('中心極限定理')
 N = st.sidebar.slider('サイコロの個数 N（1試行あたり）', min_value=1, max_value=100, value=1, step=1)
 se = SIGMA / np.sqrt(N)
+st.sidebar.markdown('---')
 st.sidebar.metric('標準偏差 σ/√N（理論値）', f'{se:.4f}')
 st.sidebar.caption(f'サイコロ1個の理論値：μ = {MU}、σ = {SIGMA:.4f}')
-st.sidebar.markdown('---')
-st.sidebar.subheader('大数の法則')
-M = st.sidebar.slider('試行回数 M', min_value=50, max_value=1000, value=300, step=50)
 
 rng = np.random.default_rng()
 
@@ -54,32 +51,6 @@ with tab1:
     plt.close(fig1)
 
     st.info('N が小さいと出目はバラつく。N を大きくすると理論値（赤破線）に近づいていく。')
-
-    st.markdown('---')
-    st.subheader('大数の法則')
-    st.write(
-        '試行回数 M を増やすと、各目の出現頻度は理論値 1/6 ≈ 0.167 に**収束**していく。'
-        'これを**大数の法則**という。下のグラフは、M 回の累積試行の中で各目の相対頻度がどう変化するかを示している。'
-    )
-
-    # 累積相対頻度の計算
-    all_rolls = rng.integers(1, 7, M)
-    colors6 = ['steelblue', 'seagreen', 'orange', 'crimson', 'purple', 'brown']
-
-    fig_lln = plt.figure(figsize=(9, 4))
-    for face, color in zip(DICE, colors6):
-        freq = np.cumsum(all_rolls == face) / np.arange(1, M + 1)
-        plt.plot(freq, color=color, alpha=0.8, lw=1.2, label=f'目 {face}')
-    plt.axhline(1 / 6, color='k', ls='--', lw=1.5, label='理論値 1/6')
-    plt.xlabel('試行回数 M', fontsize=13)
-    plt.ylabel('累積相対頻度', fontsize=13)
-    plt.title(f'大数の法則：M 回試行すると各目の頻度が 1/6 に収束する（M={M}）', fontsize=13)
-    plt.ylim(0, 0.6)
-    plt.legend(fontsize=10, ncol=3)
-    plt.grid(alpha=0.4)
-    plt.tight_layout()
-    st.pyplot(fig_lln)
-    plt.close(fig_lln)
 
 # --- Tab2: 標本平均の分布 ---
 with tab2:
