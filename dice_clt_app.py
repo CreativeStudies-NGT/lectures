@@ -25,6 +25,8 @@ se = SIGMA / np.sqrt(N)
 st.sidebar.markdown('---')
 st.sidebar.metric('標準偏差 σ/√N（理論値）', f'{se:.4f}')
 st.sidebar.caption(f'サイコロ1個の理論値：μ = {MU}、σ = {SIGMA:.4f}')
+st.sidebar.markdown('---')
+st.sidebar.button('🎲 振り直す')
 
 rng = np.random.default_rng()
 
