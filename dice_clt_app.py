@@ -50,7 +50,34 @@ with tab1:
     st.pyplot(fig1)
     plt.close(fig1)
 
-    st.info(f'N が小さいと出目はバラつく。N を大きくすると理論値（赤破線）に近づいていく。')
+    st.info('N が小さいと出目はバラつく。N を大きくすると理論値（赤破線）に近づいていく。')
+
+    st.markdown('---')
+    st.subheader('大数の法則')
+    st.write(
+        '試行回数 N を増やすと、各目の出現頻度は理論値 1/6 ≈ 0.167 に**収束**していく。'
+        'これを**大数の法則**という。下のグラフは、N 回の累積試行の中で各目の相対頻度がどう変化するかを示している。'
+    )
+
+    # 累積相対頻度の計算
+    n_plot = max(N, 200)
+    all_rolls = rng.integers(1, 7, n_plot)
+    colors6 = ['steelblue', 'seagreen', 'orange', 'crimson', 'purple', 'brown']
+
+    fig_lln = plt.figure(figsize=(9, 4))
+    for face, color in zip(DICE, colors6):
+        freq = np.cumsum(all_rolls == face) / np.arange(1, n_plot + 1)
+        plt.plot(freq, color=color, alpha=0.8, lw=1.2, label=f'目 {face}')
+    plt.axhline(1 / 6, color='k', ls='--', lw=1.5, label='理論値 1/6')
+    plt.xlabel('試行回数', fontsize=13)
+    plt.ylabel('累積相対頻度', fontsize=13)
+    plt.title('大数の法則：試行回数が増えると各目の頻度が 1/6 に収束する', fontsize=13)
+    plt.ylim(0, 0.6)
+    plt.legend(fontsize=10, ncol=3)
+    plt.grid(alpha=0.4)
+    plt.tight_layout()
+    st.pyplot(fig_lln)
+    plt.close(fig_lln)
 
 # --- Tab2: 標本平均の分布 ---
 with tab2:
