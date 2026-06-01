@@ -30,7 +30,7 @@ st.sidebar.button('🎲 振り直す')
 
 rng = np.random.default_rng()
 
-tab1, tab2, tab3 = st.tabs(['🎲 出目の分布（元の分布）', '📊 標本平均の分布', '📈 N による変化'])
+tab1, tab2 = st.tabs(['🎲 出目の分布（元の分布）', '📊 標本平均の分布'])
 
 # --- Tab1: サイコロN個の出目の分布 ---
 with tab1:
@@ -87,35 +87,3 @@ with tab2:
     col3.metric('標本平均の標準偏差（実測）', f'{means.std():.4f}', f'理論値 {se:.4f}')
 
     st.info('N を大きくすると、ヒストグラムが赤い正規分布曲線にどんどん近づいていく。')
-
-# --- Tab3: 複数N の比較 ---
-with tab3:
-    st.markdown('N を変えたとき、標本平均の分布がどう変化するかを重ねて表示する。')
-    N_values = [1, 4, 16, 100]
-    colors = ['royalblue', 'seagreen', 'orange', 'crimson']
-    x2 = np.linspace(1, 6, 500)
-
-    fig3 = plt.figure(figsize=(9, 5))
-    for nv, color in zip(N_values, colors):
-        samp = rng.integers(1, 7, (N_REPEAT, nv))
-        m = samp.mean(axis=1)
-        se_nv = SIGMA / np.sqrt(nv)
-        plt.hist(m, bins=40, density=True, alpha=0.25, color=color, ec='none')
-        plt.plot(x2, norm.pdf(x2, MU, se_nv), color=color, lw=2,
-                 label=f'N={nv:3d}  σ/√N = {se_nv:.3f}')
-
-    plt.axvline(MU, color='k', ls='--', lw=1.5, label=f'平均 μ = {MU}')
-    plt.xlabel('標本平均（出目の平均値）', fontsize=13)
-    plt.ylabel('確率密度', fontsize=13)
-    plt.title(f'N による標本平均分布の変化（各 {N_REPEAT} 回試行）', fontsize=14)
-    plt.xlim(1, 6)
-    plt.grid(alpha=0.5)
-    plt.legend(fontsize=11)
-    plt.tight_layout()
-    st.pyplot(fig3)
-    plt.close(fig3)
-
-    st.subheader('σ/√N の一覧')
-    cols = st.columns(4)
-    for col, nv in zip(cols, N_values):
-        col.metric(f'N = {nv}', f'{SIGMA / np.sqrt(nv):.4f}')
