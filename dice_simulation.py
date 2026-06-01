@@ -46,6 +46,8 @@ plt.tight_layout()
 st.pyplot(fig)
 plt.close(fig)
 
+counts = np.bincount(results, minlength=7)[1:]
+
 # --- 大数の法則 ---
 st.markdown('---')
 st.subheader('大数の法則')
@@ -65,8 +67,6 @@ else:
 
 st.markdown('---')
 # --- 統計量 ---
-counts = np.bincount(results, minlength=7)[1:]
-
 st.subheader('統計量')
 col1, col2, col3 = st.columns(3)
 col1.metric('平均', f'{results.mean():.3f}', f'理論値 3.500')
