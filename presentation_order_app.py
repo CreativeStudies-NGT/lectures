@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 import time
+from datetime import date
 
 GROUPS = [
     '唐揚げ食べ隊',
@@ -62,8 +63,9 @@ h1 {
 ''', unsafe_allow_html=True)
 
 st.markdown('<h1>🎉 発表順番決め 🎉</h1>', unsafe_allow_html=True)
+today = date.today()
 st.markdown('<p class="subtitle">DX共創コース・DXスタディーズ</p>', unsafe_allow_html=True)
-st.markdown(f'<p class="subtitle">参加グループ: {len(GROUPS)} チーム</p>', unsafe_allow_html=True)
+st.markdown(f'<p class="subtitle">{today.year}年{today.month}月{today.day}日 ／ 参加グループ: {len(GROUPS)} チーム</p>', unsafe_allow_html=True)
 
 
 def card_html(rank_index, name):
