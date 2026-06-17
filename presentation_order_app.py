@@ -62,6 +62,7 @@ h1 {
 ''', unsafe_allow_html=True)
 
 st.markdown('<h1>🎉 発表順番決め 🎉</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">DXスタディーズ</p>', unsafe_allow_html=True)
 st.markdown(f'<p class="subtitle">参加グループ: {len(GROUPS)} チーム</p>', unsafe_allow_html=True)
 
 
