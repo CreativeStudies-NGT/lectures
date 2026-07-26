@@ -87,18 +87,25 @@ locked = st.session_state.phase != 'idle'
 
 st.sidebar.header('⏱️ 時間設定')
 
+with st.sidebar.expander('⚙️ オプション設定'):
+    show_seconds = st.checkbox('秒の設定を表示', value=False, key='show_seconds', disabled=locked)
+    warning_min = st.number_input(
+        '残り何分で色が変わるか', min_value=0, max_value=30, value=2, key='warning_min', disabled=locked
+    )
+
 st.sidebar.subheader('発表時間')
 pres_min = st.sidebar.number_input('分', min_value=0, max_value=60, value=5, key='pres_min', disabled=locked)
-pres_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=0, key='pres_sec', disabled=locked)
+pres_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=0, key='pres_sec', disabled=locked) if show_seconds else 0
 
 st.sidebar.subheader('質疑応答時間')
 qa_min = st.sidebar.number_input('分', min_value=0, max_value=60, value=3, key='qa_min', disabled=locked)
-qa_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=0, key='qa_sec', disabled=locked)
+qa_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=0, key='qa_sec', disabled=locked) if show_seconds else 0
 
 DURATIONS = {
     'presentation': pres_min * 60 + pres_sec,
     'qa': qa_min * 60 + qa_sec,
 }
+WARNING_SECONDS = warning_min * 60
 
 if st.session_state.phase == 'idle':
     st.info('時間を設定して「発表スタート」を押してください')
@@ -122,7 +129,7 @@ else:
 
     if remaining < 0:
         color = '#FF4B4B'
-    elif duration > 0 and remaining <= duration * 0.2:
+    elif remaining <= WARNING_SECONDS:
         color = '#FFA500'
     else:
         color = '#4D96FF'
