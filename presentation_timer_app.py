@@ -102,25 +102,32 @@ locked = state.phase != 'idle'
 
 st.sidebar.header('⏱️ 時間設定')
 
-with st.sidebar.expander('⚙️ settings'):
-    state.show_seconds = st.checkbox('秒の設定を表示', value=state.show_seconds, disabled=locked)
-    state.warning_min = st.number_input(
-        '残り何分で色が変わるか', min_value=0, max_value=30, value=state.warning_min, disabled=locked
-    )
+pres_section = st.sidebar.container()
+qa_section = st.sidebar.container()
+settings_section = st.sidebar.container()
 
-st.sidebar.subheader('発表時間')
-state.pres_min = st.sidebar.number_input('分', min_value=0, max_value=60, value=state.pres_min, disabled=locked)
-if state.show_seconds:
-    state.pres_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=state.pres_sec, disabled=locked)
-else:
-    state.pres_sec = 0
+with settings_section:
+    with st.expander('⚙️ settings'):
+        state.show_seconds = st.checkbox('秒の設定を表示', value=state.show_seconds, disabled=locked)
+        state.warning_min = st.number_input(
+            '残り何分で色が変わるか', min_value=0, max_value=30, value=state.warning_min, disabled=locked
+        )
 
-st.sidebar.subheader('質疑応答時間')
-state.qa_min = st.sidebar.number_input('分', min_value=0, max_value=60, value=state.qa_min, disabled=locked)
-if state.show_seconds:
-    state.qa_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=state.qa_sec, disabled=locked)
-else:
-    state.qa_sec = 0
+with pres_section:
+    st.subheader('発表時間')
+    state.pres_min = st.number_input('分', min_value=0, max_value=60, value=state.pres_min, disabled=locked)
+    if state.show_seconds:
+        state.pres_sec = st.number_input('秒', min_value=0, max_value=59, value=state.pres_sec, disabled=locked)
+    else:
+        state.pres_sec = 0
+
+with qa_section:
+    st.subheader('質疑応答時間')
+    state.qa_min = st.number_input('分', min_value=0, max_value=60, value=state.qa_min, disabled=locked)
+    if state.show_seconds:
+        state.qa_sec = st.number_input('秒', min_value=0, max_value=59, value=state.qa_sec, disabled=locked)
+    else:
+        state.qa_sec = 0
 
 DURATIONS = {
     'presentation': state.pres_min * 60 + state.pres_sec,
