@@ -15,7 +15,18 @@
   ```bash
   hostname -I
   ```
-- [ ] モニターに映るラズパイ本体のブラウザで `http://localhost:8501` を開き、フルスクリーン表示にしておく
+- [ ] モニターに映るラズパイ本体のブラウザで `http://localhost:8501` を開き、キオスクモードにしておく
+
+### キオスクモードの設定方法（ラズパイ / Chromium）
+
+アドレスバーやタブなどのブラウザUIを非表示にし、指定ページだけを全画面表示するモード。誤操作や見た目のノイズを防げる。
+
+```bash
+chromium-browser --noerrdialogs --disable-infobars --kiosk http://localhost:8501
+```
+
+- 終了するには `Alt + F4`、またはターミナルから該当プロセスを `kill`
+- 起動時に自動でキオスクモードを立ち上げたい場合は、上記コマンドを `~/.config/lxsession/LXDE-pi/autostart` に追記しておく
 
 ---
 
