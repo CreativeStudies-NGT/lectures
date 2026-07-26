@@ -124,8 +124,7 @@ else:
     remaining = duration - get_elapsed()
 
     mins, secs = divmod(int(abs(remaining)), 60)
-    sign = '+' if remaining < 0 else ''
-    time_str = f'{sign}{mins:02d}:{secs:02d}'
+    time_str = f'{mins:02d}:{secs:02d}'
 
     if remaining < 0:
         color = '#FF4B4B'
