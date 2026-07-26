@@ -102,7 +102,7 @@ locked = state.phase != 'idle'
 
 st.sidebar.header('⏱️ 時間設定')
 
-with st.sidebar.expander('⚙️ オプション設定'):
+with st.sidebar.expander('⚙️ settings'):
     state.show_seconds = st.checkbox('秒の設定を表示', value=state.show_seconds, disabled=locked)
     state.warning_min = st.number_input(
         '残り何分で色が変わるか', min_value=0, max_value=30, value=state.warning_min, disabled=locked
