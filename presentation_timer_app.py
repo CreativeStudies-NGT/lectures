@@ -29,7 +29,7 @@ h1 {
     text-align: center;
     font-family: 'Nunito', sans-serif;
     font-weight: 900;
-    font-size: 7rem;
+    font-size: 14rem;
     line-height: 1.1;
     margin-bottom: 1.5rem;
 }
