@@ -1,3 +1,6 @@
+import os
+import subprocess
+import threading
 import time
 from dataclasses import dataclass
 from typing import Optional
@@ -7,6 +10,19 @@ import streamlit as st
 st.set_page_config(page_title='プレゼンタイマー', page_icon='⏱️', layout='centered')
 
 PHASE_LABELS = {'presentation': '🎤 発表時間', 'qa': '💬 質疑応答時間'}
+BELL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'bell.wav')
+
+
+def play_bell(times=1):
+    def _play():
+        for _ in range(times):
+            try:
+                subprocess.run(['aplay', '-q', BELL_PATH], check=False)
+            except FileNotFoundError:
+                return
+            time.sleep(0.15)
+
+    threading.Thread(target=_play, daemon=True).start()
 
 
 @dataclass
@@ -21,6 +37,8 @@ class TimerState:
     qa_sec: int = 0
     show_seconds: bool = False
     warning_min: int = 2
+    warning_rung: bool = False
+    finish_rung: bool = False
 
 
 @st.cache_resource
@@ -78,6 +96,8 @@ def start_phase(phase):
     state.phase_elapsed = 0.0
     state.phase_start = time.time()
     state.running = True
+    state.warning_rung = False
+    state.finish_rung = False
 
 
 def pause():
@@ -96,6 +116,8 @@ def reset():
     state.running = False
     state.phase_elapsed = 0.0
     state.phase_start = None
+    state.warning_rung = False
+    state.finish_rung = False
 
 
 locked = state.phase != 'idle'
@@ -150,6 +172,14 @@ elif state.phase == 'done':
 else:
     duration = DURATIONS[state.phase]
     remaining = duration - get_elapsed()
+
+    if not state.warning_rung and remaining <= WARNING_SECONDS:
+        play_bell(1)
+        state.warning_rung = True
+
+    if not state.finish_rung and remaining <= 0:
+        play_bell(2)
+        state.finish_rung = True
 
     mins, secs = divmod(int(abs(remaining)), 60)
     time_str = f'{mins:02d}:{secs:02d}'
