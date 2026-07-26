@@ -25,6 +25,10 @@ h1 {
     margin-bottom: 0.5rem;
 }
 
+[data-testid="stSidebar"] {
+    width: 220px !important;
+}
+
 .timer {
     text-align: center;
     font-family: 'Nunito', sans-serif;
@@ -84,14 +88,12 @@ locked = st.session_state.phase != 'idle'
 st.sidebar.header('⏱️ 時間設定')
 
 st.sidebar.subheader('発表時間')
-pcol1, pcol2 = st.sidebar.columns(2)
-pres_min = pcol1.number_input('分', min_value=0, max_value=60, value=5, key='pres_min', disabled=locked)
-pres_sec = pcol2.number_input('秒', min_value=0, max_value=59, value=0, key='pres_sec', disabled=locked)
+pres_min = st.sidebar.number_input('分', min_value=0, max_value=60, value=5, key='pres_min', disabled=locked)
+pres_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=0, key='pres_sec', disabled=locked)
 
 st.sidebar.subheader('質疑応答時間')
-qcol1, qcol2 = st.sidebar.columns(2)
-qa_min = qcol1.number_input('分', min_value=0, max_value=60, value=3, key='qa_min', disabled=locked)
-qa_sec = qcol2.number_input('秒', min_value=0, max_value=59, value=0, key='qa_sec', disabled=locked)
+qa_min = st.sidebar.number_input('分', min_value=0, max_value=60, value=3, key='qa_min', disabled=locked)
+qa_sec = st.sidebar.number_input('秒', min_value=0, max_value=59, value=0, key='qa_sec', disabled=locked)
 
 DURATIONS = {
     'presentation': pres_min * 60 + pres_sec,
