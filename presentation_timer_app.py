@@ -12,7 +12,7 @@ st.markdown('''
 
 h1 {
     font-family: 'Nunito', sans-serif;
-    font-size: 2.4rem !important;
+    font-size: 2.0rem !important;
     text-align: center;
     margin-bottom: 1.5rem !important;
 }
