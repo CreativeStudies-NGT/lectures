@@ -1,0 +1,23 @@
+# --- ログ・中間生成物 ---
+*.log
+datetime_log.txt
+*_preview.html
+
+# --- 学生の個人情報を含むファイル（リポジトリに入れない） ---
+# 学籍番号・成績・提出物・アンケート回答・受講ログなどを含むため除外する。
+# 追加する際は中身を確認し、個人情報が含まれないことを確かめること。
+AI_tools2026.xlsx
+DSA2025アンケート.xlsx
+DXS2026学生コメント.docx
+RPi_html_review_list.xlsx
+akt_dx2026.xlsx
+dxs_python_grading.xlsx
+lec08_Zoomログ.xlsx
+lec8_eval_kumano.xlsx
+創生学部_マイナビ講義コメント.xlsx
+
+# --- Python / Jupyter ---
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
