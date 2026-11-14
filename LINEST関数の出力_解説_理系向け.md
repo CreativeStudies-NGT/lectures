@@ -233,21 +233,36 @@ $$
 
 ### 5.1 単回帰の場合
 
-$`k = 1`$ のとき、$`S_{xx} = \sum_i (x_i - \bar{x})^2`$ とおくと、
+教科書によく出てくる単回帰の標準誤差の式は、上の一般の式で説明変数を 1 個（$`k = 1`$）にし、2×2 の逆行列を書き下したものです。
+
+$`k = 1`$ のとき、$`X`$ の列は 1 の列と $`x`$ の列の 2 本なので、
 
 $$
-(X^\top X)^{-1} = \begin{bmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{bmatrix}^{-1}
-= \frac{1}{n S_{xx}} \begin{bmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{bmatrix}
+X^\top X = \begin{bmatrix} n & \sum x_i \\ \sum x_i & \sum x_i^2 \end{bmatrix}
 $$
 
-なので、
+です。2×2 行列の逆行列の公式 $`\begin{bmatrix} a & b \\ c & d \end{bmatrix}^{-1} = \dfrac{1}{ad - bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}`$ を使い、$`S_{xx} = \sum_i (x_i - \bar{x})^2 = \sum x_i^2 - n\bar{x}^2`$ とおきます。
+
+1. 行列式：$`n\sum x_i^2 - \big(\sum x_i\big)^2 = n\big(\sum x_i^2 - n\bar{x}^2\big) = n S_{xx}`$
+2. したがって
+
+$$
+(X^\top X)^{-1} = \frac{1}{n S_{xx}} \begin{bmatrix} \sum x_i^2 & -\sum x_i \\ -\sum x_i & n \end{bmatrix}
+$$
+
+3. 傾き $`b_1`$ の対角成分（右下）：$`\dfrac{n}{n S_{xx}} = \dfrac{1}{S_{xx}}`$
+4. 切片 $`b_0`$ の対角成分（左上）：$`\dfrac{\sum x_i^2}{n S_{xx}} = \dfrac{S_{xx} + n\bar{x}^2}{n S_{xx}} = \dfrac{1}{n} + \dfrac{\bar{x}^2}{S_{xx}}`$
+
+これを $`\mathrm{SE}(b_j) = s\sqrt{[(X^\top X)^{-1}]_{jj}}`$ に入れると、
 
 $$
 \mathrm{SE}(b_1) = \frac{s}{\sqrt{S_{xx}}}, \qquad
 \mathrm{SE}(b_0) = s \sqrt{\frac{1}{n} + \frac{\bar{x}^2}{S_{xx}}}
 $$
 
-となります。教科書によく出てくる式は、この特別な場合です。
+となります。$`s`$ も 4.3 の式で $`p = 2`$ とした $`s^2 = \mathrm{SS_{res}}/(n - 2)`$ です。
+
+教科書の式は、一般の式と別の式ではなく、逆行列を手で書ける 2×2 の場合に限って書き下したものです。説明変数が 2 個以上になると逆行列を簡単な式で書けないので、行列のまま（Excel なら MINVERSE で、8. を参照）計算します。
 
 ### 5.2 例題で確認
 
